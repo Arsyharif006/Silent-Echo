@@ -1693,8 +1693,8 @@ export const gameData = {
             id: "the_truth_enraged",
             name: "The Truth (Enraged)",
             description: "Versi marah dari The Truth, lebih kuat dan berbahaya.",
-            health: 130,
-            attackPower: 35
+            health: 1000,
+            attackPower: 50
           },
           choices: [
             {
@@ -1715,6 +1715,24 @@ export const gameData = {
                 description: "Di saat terakhir, Kamu mengakui kesalahanmu dan menerima takdirmu.",
                 ending: "redemption",
                 nextSceneId: "ending_redemption"
+              }
+            },
+            {
+              id: "fight_the_truth",
+              text: "Serang The Truth (Enraged)",
+              consequence: {
+                type: "battle",
+                description: "Kamu menyerang The Truth (Enraged) dengan segala yang Kamu miliki, mencoba menghapus kebenaran itu.",
+                battleOutcome: {
+                  victory: {
+                    description: "Kamu berhasil mengalahkan The Truth (Enraged), tapi saat sosok itu menghilang, Kamu merasa bagian dari dirimu sendiri ikut lenyap.",
+                    nextSceneId: "ending_insanity"
+                  },
+                  defeat: {
+                    description: "The Truth (Enraged) terlalu kuat. Kamu jatuh ke tanah, tidak berdaya menghadapi kebenaran.",
+                    nextSceneId: "ending_redemption"
+                  }
+                }
               }
             }
           ]
