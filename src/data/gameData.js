@@ -1651,7 +1651,7 @@ export const gameData = {
             id: "the_truth",
             name: "The Truth",
             description: "Manifestasi kebenaran dari diri Ethan yang sebenarnya, dengan luka di seluruh tubuh dan mata kosong.",
-            health: 125,
+            health: 120,
             attackPower: 30
           },
           choices: [
@@ -1693,7 +1693,7 @@ export const gameData = {
             id: "the_truth_enraged",
             name: "The Truth (Enraged)",
             description: "Versi marah dari The Truth, lebih kuat dan berbahaya.",
-            health: 150,
+            health: 130,
             attackPower: 35
           },
           choices: [
