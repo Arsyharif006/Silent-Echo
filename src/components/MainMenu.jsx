@@ -22,7 +22,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     bgm.current = new Howl({
       src: ['/Silent-Echo/audio/silenthill.mp3'],
       loop: true,
-      volume: 3,
+      volume: 2,
     });
 
     return () => clearInterval(flickerInterval);
