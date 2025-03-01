@@ -18,7 +18,7 @@ export const gameData = {
       initialScene: {
         id: "awakening",
         narration: "Kamu  membuka mata dan menemukan dirimu di sebuah jalanan kosong. Kabut tebal menyelimuti sekeliling. Tidak ada suara, tidak ada tanda kehidupan.",
-        dialog: "Ethan: \"Apa tempat ini...? Kenapa aku ada di sini?\"",
+        dialog: "Ethan: \"Tempat apa ini...!? Kenapa aku ada di sini?\"",
         choices: [
           {
             id: "check_surroundings",
