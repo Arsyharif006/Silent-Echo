@@ -8,7 +8,9 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionStep, setTransitionStep] = useState(0);
+  const [showCredits, setShowCredits] = useState(false);
   const bgm = useRef(null);
+  const creditsRef = useRef(null);
 
   useEffect(() => {
     setHasSave(hasSavedGame());
@@ -25,6 +27,27 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
 
     return () => clearInterval(flickerInterval);
   }, []);
+
+  // Add effect for credits scrolling
+  useEffect(() => {
+    if (showCredits && creditsRef.current) {
+      const scrollInterval = setInterval(() => {
+        if (creditsRef.current) {
+          creditsRef.current.scrollTop += 1;
+
+          // If we've scrolled to the bottom, reset after a delay
+          if (creditsRef.current.scrollTop + creditsRef.current.clientHeight >= creditsRef.current.scrollHeight) {
+            clearInterval(scrollInterval);
+            setTimeout(() => {
+              setShowCredits(false);
+            }, 2000);
+          }
+        }
+      }, 30);
+
+      return () => clearInterval(scrollInterval);
+    }
+  }, [showCredits]);
 
   const startMusic = () => {
     if (!isMusicPlaying) {
@@ -69,6 +92,11 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     }, 9000); // Adjusted timing
   };
 
+  const handleShowCredits = () => {
+    startMusic(); // Start music if not already playing
+    setShowCredits(true);
+  };
+
   // Function to render the current transition message
   const renderTransitionMessage = () => {
     switch (transitionStep) {
@@ -85,7 +113,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
               Tidak disarankan bagi pemain di bawah 16 tahun.
             </p>
             <p className="text-red-500 text-xs md:text-sm font-semibold mt-4">
-            Dengan melanjutkan, Anda memahami dan menerima risiko yang terkait dengan pengalaman bermain ini.
+              Dengan melanjutkan, Anda memahami dan menerima risiko yang terkait dengan pengalaman bermain ini.
             </p>
           </div>
 
@@ -113,6 +141,93 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     }
   };
 
+  const renderCredits = () => {
+    return (
+      <div
+        className="fixed inset-0 bg-black z-20 flex flex-col items-center overflow-hidden"
+      >
+        <div
+          ref={creditsRef}
+          className="w-full h-full overflow-y-hidden flex flex-col items-center pt-screen"
+        >
+          <div className="h-screen"></div> {/* Spacer to start below screen */}
+
+          <div className="flex flex-col items-center mb-32 pt-16">
+            {/* App Icon */}
+            <div className="w-28 h-28 md:h-36 md:w-36 mb-8 relative overflow-hidden rounded-xl">
+              <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
+                <img src="/Silent-Echo/assets/web.png" alt="Logo SE" className="h-24 md:h-32" />
+              </div>
+
+              <div className="absolute inset-0 bg-noise opacity-30"></div>
+            </div>
+
+            {/* Game Title */}
+            <h1 className="text-4xl font-serif text-gray-300 mb-2 tracking-wider">Silent Echo</h1>
+            <p className="text-gray-500 text-sm mb-24 italic">The sound of the past never truly fades.</p>
+
+            {/* Credits Sections */}
+            <h2 className="text-2xl font-serif text-gray-400 mb-6 tracking-wide">Development Team</h2>
+
+            <div className="mb-16 text-center">
+              <h3 className="text-xl text-gray-500 mb-3">Created By</h3>
+              <p className="text-gray-300 text-lg mb-1">Muhammad Arya Ramadhan</p>
+            </div>
+
+            <div className="mb-16 text-center">
+              <h3 className="text-xl text-gray-500 mb-3">Programming</h3>
+              <p className="text-gray-300 text-lg mb-1">Muhammad Arya Ramadhan</p>
+              <p className="text-gray-400 text-sm mt-2">React.js • TailwindCSS</p>
+            </div>
+
+            <div className="mb-16 text-center">
+              <h3 className="text-xl text-gray-500 mb-3">Design & Art Direction</h3>
+              <p className="text-gray-300 text-lg mb-1">Muhammad Arya Ramadhan</p>
+              <p className="text-gray-400 text-sm mt-2">UI/UX • Visual Assets • Animation</p>
+            </div>
+
+            <div className="mb-16 text-center">
+              <h3 className="text-xl text-gray-500 mb-3">Sound Design</h3>
+              <p className="text-gray-300 text-lg mb-1">Muhammad Arya Ramadhan</p>
+              <p className="text-gray-400 text-sm mt-2">Music • Ambient Sounds • Effects</p>
+            </div>
+
+            <div className="mb-16 text-center">
+              <h3 className="text-xl text-gray-500 mb-3">Story & Narrative</h3>
+              <p className="text-gray-300 text-lg mb-1">Muhammad Arya Ramadhan</p>
+            </div>
+
+            <div className="mb-16 text-center">
+              <h3 className="text-xl text-gray-500 mb-3">Special Thanks</h3>
+              <p className="text-gray-300 text-lg mb-1">Silent Hill Series</p>
+              <p className="text-gray-300 text-lg mb-1">Psychological Horror Community</p>
+              <p className="text-gray-300 text-lg mb-1">React & TailwindCSS Communities</p>
+            </div>
+
+            <div className="mb-32 text-center">
+              <h3 className="text-xl text-gray-500 mb-3">Technologies Used</h3>
+              <p className="text-gray-400 mb-1">React.js •  TailwindCSS</p>
+              <p className="text-gray-400 mb-1">Howler.js • LocalStorage API</p>
+            </div>
+
+            <div className="mb-16 text-center">
+              <p className="text-gray-500 text-lg mb-1">© 2025 Silent Echo</p>
+              <p className="text-gray-400 text-sm mb-1">All Rights Reserved</p>
+            </div>
+
+            {/* Button to close credits */}
+            <button
+              onClick={() => setShowCredits(false)}
+              className="text-gray-500 hover:text-gray-300 mb-32 mt-8 px-6 py-2 border border-gray-800 hover:border-gray-600 transition-colors duration-300"
+            >
+              Kembali
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black relative overflow-hidden px-4">
       {/* Noise Overlay */}
@@ -130,7 +245,10 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
         </div>
       )}
 
-      <div className={`w-full max-w-md text-center p-6 md:p-8 relative ${isTransitioning ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
+      {/* Credits Screen */}
+      {showCredits && renderCredits()}
+
+      <div className={`w-full max-w-md text-center p-6 md:p-8 relative ${isTransitioning || showCredits ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
         <h1 className={`text-4xl md:text-5xl font-serif text-gray-400 mb-4 md:mb-6 tracking-wider ${titleFlicker ? 'blur-sm opacity-80' : ''} transition-all duration-300`}>
           Silent Echo
         </h1>
@@ -164,6 +282,12 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
 
         <div className="mt-10 text-gray-600 text-xs md:text-sm font-light">
           <p className="mt-1">© 2025 Silent Echo</p>
+          <button
+            onClick={handleShowCredits}
+            className="text-gray-600 hover:text-gray-400 mt-2 transition-colors duration-300"
+          >
+            Credits
+          </button>
         </div>
       </div>
     </div>

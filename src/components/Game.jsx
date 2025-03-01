@@ -1,10 +1,10 @@
-// Game.jsx
 import { useEffect, useState, useRef } from 'react';
 import { useGame } from '../contexts/GameContext';
 import Dialog from './Dialog';
 import Choices from './Choices';
 import StatusBar from './StatusBar';
 import BattleScreen from './BattleScreen';
+import EndingScreen from './EndingScreen';
 
 const Game = ({ initialState, onGameOver, onReturnToMenu }) => {
   const {
@@ -170,38 +170,45 @@ const Game = ({ initialState, onGameOver, onReturnToMenu }) => {
     }, 500);
   };
   
+  // Check if current scene is an ending scene
+  const isEndingScene = 
+    currentScene?.choices?.length === 1 && 
+    currentScene.choices[0]?.consequence?.type === "game_end";
+  
   return (
     <div className={`game-container min-h-screen flex flex-col bg-black transition-all duration-1000
       ${fadeIn ? 'opacity-100' : 'opacity-0'}
       ${screenGlitch ? 'blur-sm filter-glitch' : ''}`}
     >
-      {/* Header */}
-      <div className="bg-black p-4 border-b border-gray-800">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-serif text-gray-400">
-          Chapter: {currentChapter.title}
-          </h2>
-          <div className="flex space-x-3">
-            <button 
-              onClick={handleSaveGame}
-              disabled={savingInProgress}
-              className="px-3 py-1 bg-black hover:bg-gray-900 text-gray-500 text-sm rounded border border-gray-800 
-              transition-all duration-300 hover:text-gray-300 hover:border-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Simpan
-            </button>
-            <button 
-              onClick={handleMainMenu}
-              className="px-3 py-1 bg-black hover:bg-gray-900 text-gray-500 text-sm rounded border border-gray-800
-              transition-all duration-300 hover:text-gray-300 hover:border-gray-700"
-            >
-              Menu
-            </button>
+      {/* Header - Hide on ending screen */}
+      {!isEndingScene && (
+        <div className="bg-black p-4 border-b border-gray-800">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-serif text-gray-400">
+            Chapter: {currentChapter.title}
+            </h2>
+            <div className="flex space-x-3">
+              <button 
+                onClick={handleSaveGame}
+                disabled={savingInProgress}
+                className="px-3 py-1 bg-black hover:bg-gray-900 text-gray-500 text-sm rounded border border-gray-800 
+                transition-all duration-300 hover:text-gray-300 hover:border-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Simpan
+              </button>
+              <button 
+                onClick={handleMainMenu}
+                className="px-3 py-1 bg-black hover:bg-gray-900 text-gray-500 text-sm rounded border border-gray-800
+                transition-all duration-300 hover:text-gray-300 hover:border-gray-700"
+              >
+                Menu
+              </button>
+            </div>
           </div>
+          
+          <StatusBar />
         </div>
-        
-        <StatusBar />
-      </div>
+      )}
       
       {/* Main Game Content */}
       <div className="flex-grow p-6 overflow-y-auto">
@@ -214,6 +221,9 @@ const Game = ({ initialState, onGameOver, onReturnToMenu }) => {
           </>
         )}
       </div>
+      
+      {/* Ending Screen */}
+      <EndingScreen onReturnToMenu={onReturnToMenu} />
       
       {/* Borderless Dark Confirmation Dialog */}
       {showConfirmation && (
