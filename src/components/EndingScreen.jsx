@@ -25,9 +25,13 @@ const EndingScreen = ({ onReturnToMenu }) => {
         title: getEndingTitle(ending)
       });
       
-      // Animate in
-      setTimeout(() => setIsVisible(true), 800);
-      setTimeout(() => setFadeIn(true), 1200);
+      // Use 6 second delay for all endings
+      const animationDelay = 9000;  // 6 seconds for visibility
+      const fadeDelay = 9400;       // 6.4 seconds for fade-in
+      
+      // Animate in with delay
+      setTimeout(() => setIsVisible(true), animationDelay);
+      setTimeout(() => setFadeIn(true), fadeDelay);
       
       // Play ending sound effect
       if (!audioPlayed) {
@@ -51,6 +55,8 @@ const EndingScreen = ({ onReturnToMenu }) => {
         return 'Lingkaran Setan';
       case 'insanity':
         return 'Jatuh ke Dalam Kegilaan';
+      case 'wakeup':
+        return 'Pelarian dalam Penyangkalan';
       default:
         return 'Akhir Cerita';
     }
@@ -64,6 +70,8 @@ const EndingScreen = ({ onReturnToMenu }) => {
         return 'bg-amber-900/40 border-amber-700/50';
       case 'insanity':
         return 'bg-red-900/40 border-red-700/50';
+      case 'wakeup':
+        return 'bg-blue-900/40 border-blue-700/50';
       default:
         return 'bg-gray-900/40 border-gray-700/50';
     }

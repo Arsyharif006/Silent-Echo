@@ -29,10 +29,36 @@ export const gameData = {
               itemsGained: ["senter", "catatan_misterius"],
               nextSceneId: "found_items"
             }
+          },
+          {
+            id: "accept_dream",
+            text: "Ini Pasti Hanya Mimpi",
+            consequence: {
+              type: "ending",
+              description: "Kamu memejamkan mata kuat-kuat, yakin bahwa ini semua hanyalah mimpi buruk.",
+              nextSceneId: "quick_ending",
+              ending: "denial_escape"
+            }
           }
         ]
       },
       scenes: [
+        {
+          id: "quick_ending",
+          narration: "Kamu memejamkan mata erat-erat, berusaha meyakinkan dirimu bahwa ini semua hanyalah mimpi buruk. Saat membuka mata, kabut mulai memudar, dan pandanganmu menjadi terang benderang.",
+          dialog: "Ethan: \"Aku... aku kembali?\"",
+          choices: [
+            {
+              id: "wake_up",
+              text: "Bangun",
+              consequence: {
+                type: "game_end",
+                description: "Kamu terbangun di tempat tidurmu, bermandikan keringat dingin. Mimpi itu tampak begitu nyata, tapi kini kamu telah kembali ke dunia nyata. Atau benarkah demikian?",
+                ending: "wakeup"
+              }
+            }
+          ]
+        },
         {
           id: "found_items",
           narration: "Kamu menemukan senter yang masih berfungsi dan secarik kertas usang. Catatan itu bertuliskan \"Jangan Percaya Mereka\" dengan tinta merah.",
@@ -1740,8 +1766,9 @@ export const gameData = {
               }
             }
           ]
-        }
+        },
       ]
     }
+    
   ]
   }
