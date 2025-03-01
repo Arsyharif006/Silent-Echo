@@ -32,7 +32,7 @@ const Dialog = () => {
     if (!audioRef.current) {
       audioRef.current = new Audio('/Silent-Echo/audio/typing.mp3');
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.2; // Lower volume to not be too distracting
+      audioRef.current.volume = 0.6; // Lower volume to not be too distracting
     }
     
     // Start playing typing sound
