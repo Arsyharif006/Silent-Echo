@@ -12,6 +12,7 @@ const Dialog = () => {
   const scene = getCurrentScene();
   const textToType = scene?.narration || '';
   const dialogRef = useRef(null);
+  const audioRef = useRef(null);
   
   useEffect(() => {
     setTypedText('');
@@ -26,6 +27,18 @@ const Dialog = () => {
     const distortionInterval = setInterval(() => {
       setTextDistortion(prev => !prev);
     }, 3000 + Math.random() * 5000);
+    
+    // Initialize audio for typing sound
+    if (!audioRef.current) {
+      audioRef.current = new Audio('/Silent-Echo/audio/typing.mp3');
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.2; // Lower volume to not be too distracting
+    }
+    
+    // Start playing typing sound
+    audioRef.current.play().catch(error => {
+      console.error("Could not play audio:", error);
+    });
     
     const typingInterval = setInterval(() => {
       if (currentIndex < textToType.length) {
@@ -44,6 +57,13 @@ const Dialog = () => {
       } else {
         clearInterval(typingInterval);
         setIsTyping(false);
+        
+        // Stop typing sound when typing is complete
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+        
         setTimeout(() => setShowDialog(true), 700);
       }
     }, typeSpeed);
@@ -51,6 +71,12 @@ const Dialog = () => {
     return () => {
       clearInterval(typingInterval);
       clearInterval(distortionInterval);
+      
+      // Stop audio when component unmounts or scene changes
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
     };
   }, [scene, textToType]);
   
@@ -64,6 +90,13 @@ const Dialog = () => {
     if (isTyping) {
       setTypedText(textToType);
       setIsTyping(false);
+      
+      // Stop audio when typing is skipped
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      
       setTimeout(() => setShowDialog(true), 300);
     }
   };
@@ -71,13 +104,13 @@ const Dialog = () => {
   return (
     <div className="mb-6">
       <div 
-        className={`bg-black border border-gray-800 rounded-lg p-6 mb-4 min-h-48 shadow-lg overflow-auto 
+        className={`bg-black border border-gray-800 rounded-lg p-6 mb-4 min-h-48 shadow-lg overflow-auto
         ${textDistortion ? 'text-opacity-95' : 'text-opacity-100'}`}
         onClick={skipTyping}
         ref={dialogRef}
       >
         <p className={`text-gray-400 leading-relaxed whitespace-pre-wrap font-serif text-md
-          ${textDistortion ? 'blur-[0.5px]' : ''}`}>
+         ${textDistortion ? 'blur-[0.5px]' : ''}`}>
           {typedText}
           {isTyping && <span className="animate-pulse text-gray-500">_</span>}
         </p>
