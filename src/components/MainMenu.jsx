@@ -16,7 +16,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     }, 3000 + Math.random() * 3000);
   
     bgm.current = new Howl({
-      src: ['/audio/silenthill.mp3'],
+      src: ['/Silent-Echo/audio/silenthill.mp3'],
       loop: true,
       volume: 0.8,
     });
