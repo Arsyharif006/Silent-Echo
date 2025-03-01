@@ -137,8 +137,8 @@ export const gameData = {
             id: "the_hollow",
             name: "The Hollow",
             description: "Makhluk dengan wajah manusia tanpa ekspresi. Lubang hitam menggantikan mata dan mulutnya.",
-            health: 50,
-            attackPower: 10
+            health: 70,
+            attackPower: 20
           },
           choices: [
             {
@@ -357,7 +357,7 @@ export const gameData = {
             name: "The Wraith",
             description: "Sosok melayang dengan jubah compang-camping dan wajah terdistorsi.",
             health: 70,
-            attackPower: 15
+            attackPower: 25
           },
           choices: [
             {
@@ -839,7 +839,7 @@ export const gameData = {
             name: "The Maw",
             description: "Makhluk dengan tubuh penuh mulut yang menghisap suara dan mengubahnya menjadi jeritan.",
             health: 85,
-            attackPower: 20
+            attackPower: 25
           },
           choices: [
             {
