@@ -138,35 +138,55 @@ export function GameProvider({ children }) {
     }
   };
 
+  const calculateSanityDefense = (sanity) => {
+    if (sanity >= 80) return 15;
+    if (sanity >= 60) return 10;
+    if (sanity >= 30) return 5;
+    if (sanity >= 10) return 2;
+    return 0; // Jika sanity < 10, tidak ada pengurangan
+  };
+  
   const handleBattleAction = (action) => {
     if (!battleState) return;
     
     let updatedBattle = { ...battleState };
-    
-    // Basic battle system
+    const sanityDefense = calculateSanityDefense(protagonist.status.sanity);
+  
     if (action === 'attack') {
-      // Player attacks monster
+      // Player menyerang monster
       const playerDamage = Math.floor(Math.random() * 15) + 5;
       updatedBattle.monsterHealth -= playerDamage;
-      
-      // Monster attacks player if still alive
+  
+      // Monster menyerang jika masih hidup
       if (updatedBattle.monsterHealth > 0) {
-        const monsterDamage = Math.floor(Math.random() * battleState.monster.attackPower * 0.5) + 
-          Math.floor(battleState.monster.attackPower * 0.5);
+        let monsterDamage = Math.floor(Math.random() * battleState.monster.attackPower * 0.5) + 
+                            Math.floor(battleState.monster.attackPower * 0.5);
+        
+        // Kurangi damage berdasarkan sanity
+        monsterDamage = Math.max(0, monsterDamage - sanityDefense);
+  
         updatedBattle.playerHealth -= monsterDamage;
         updateProtagonistStatus({ health: updatedBattle.playerHealth });
       }
+  
     } else if (action === 'defend') {
-      // Player defends, takes less damage
-      const monsterDamage = Math.floor(Math.random() * battleState.monster.attackPower * 0.3) + 
-        Math.floor(battleState.monster.attackPower * 0.2);
+      // Player bertahan, damage lebih kecil
+      let monsterDamage = Math.floor(Math.random() * battleState.monster.attackPower * 0.3) + 
+                          Math.floor(battleState.monster.attackPower * 0.2);
+      
+      // Kurangi damage berdasarkan sanity
+      monsterDamage = Math.max(0, monsterDamage - sanityDefense);
+  
       updatedBattle.playerHealth -= monsterDamage;
       updateProtagonistStatus({ health: updatedBattle.playerHealth });
+  
+      // Bonus: Tambahkan sanity saat defend (opsional)
+      updateProtagonistStatus({ sanity: Math.min(100, protagonist.status.sanity + 2) });
     }
-    
-    // Check battle outcome
+  
+    // Cek hasil pertarungan
     if (updatedBattle.monsterHealth <= 0) {
-      // Player won
+      // Player menang
       setBattleState(null);
       setCurrentSceneId(battleState.outcome.victory.nextSceneId);
       if (battleState.outcome.victory.sanityChange) {
@@ -175,7 +195,7 @@ export function GameProvider({ children }) {
         });
       }
     } else if (updatedBattle.playerHealth <= 0) {
-      // Player lost
+      // Player kalah
       setBattleState(null);
       setCurrentSceneId(battleState.outcome.defeat.respawnSceneId || battleState.outcome.defeat.nextSceneId);
       if (battleState.outcome.defeat.sanityChange) {
@@ -184,10 +204,12 @@ export function GameProvider({ children }) {
         });
       }
     } else {
-      // Battle continues
+      // Pertarungan berlanjut
       setBattleState(updatedBattle);
     }
   };
+  
+  
 
   const saveGame = () => {
     const gameState = {

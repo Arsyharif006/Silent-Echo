@@ -122,7 +122,7 @@ export const gameData = {
               consequence: {
                 type: "chapter_progression",
                 description: "Kamu memutuskan untuk mencari rumah sakit yang disebutkan.",
-                sanityChange: -5,
+                sanityChange: -10,
                 nextChapterId: "chapter2",
                 nextSceneId: "hospital_entrance"
               }
@@ -138,7 +138,7 @@ export const gameData = {
             name: "The Hollow",
             description: "Makhluk dengan wajah manusia tanpa ekspresi. Lubang hitam menggantikan mata dan mulutnya.",
             health: 50,
-            attackPower: 15
+            attackPower: 10
           },
           choices: [
             {
@@ -242,7 +242,7 @@ export const gameData = {
             consequence: {
               type: "exploration",
               description: "Kamu melangkah masuk ke dalam rumah sakit yang gelap. Suara tangisan dan rintihan samar terdengar dari jauh.",
-              sanityChange: -5,
+              sanityChange: -10,
               nextSceneId: "hospital_lobby"
             }
           }
@@ -289,7 +289,7 @@ export const gameData = {
               consequence: {
                 type: "puzzle_solved",
                 description: "Kamu berhasil menyusun potongan-potongan rekaman medis.",
-                sanityChange: -10,
+                sanityChange: +5,
                 nextSceneId: "records_revelation"
               }
             },
@@ -357,7 +357,7 @@ export const gameData = {
             name: "The Wraith",
             description: "Sosok melayang dengan jubah compang-camping dan wajah terdistorsi.",
             health: 70,
-            attackPower: 20
+            attackPower: 15
           },
           choices: [
             {
@@ -405,8 +405,8 @@ export const gameData = {
               consequence: {
                 type: "danger",
                 description: "Kamu tidak berhasil mengaktifkan mekanisme penguncian. Pintu hancur dan The Wraith menyerangmu!",
-                healthChange: -30,
-                sanityChange: -15,
+                healthChange: -15,
+                sanityChange: -10,
                 nextSceneId: "wraith_attack"
               }
             }
@@ -425,14 +425,14 @@ export const gameData = {
                 battleOutcome: {
                   victory: {
                     description: "Setelah pertarungan menegangkan, The Wraith akhirnya lenyap menjadi kabut tipis.",
-                    healthChange: -25,
-                    sanityChange: -15,
+                    healthChange: -15,
+                    sanityChange: -5,
                     nextSceneId: "after_wraith"
                   },
                   defeat: {
                     description: "The Wraith terlalu kuat. Kamu tidak bisa melawannya...",
                     respawnSceneId: "hospital_entrance",
-                    sanityChange: -20
+                    sanityChange: -10
                   }
                 }
               }
@@ -533,7 +533,7 @@ export const gameData = {
               consequence: {
                 type: "clue",
                 description: "Tulisan di dinding tampak ditulis dengan darah: 'Kecelakaan bukan kecelakaan. Dia tahu. Dia yang menyebabkan.'",
-                sanityChange: -10,
+                sanityChange: -5,
                 nextSceneId: "wall_messages"
               }
             },
@@ -601,7 +601,7 @@ export const gameData = {
               consequence: {
                 type: "vision_end",
                 description: "Kamu menutup jam saku dan visi itu berhenti. Kepalamu berdenyut sakit.",
-                sanityChange: -15,
+                sanityChange: -10,
                 nextSceneId: "factory_inner_area"
               }
             }
@@ -643,7 +643,7 @@ export const gameData = {
               consequence: {
                 type: "discovery",
                 description: "Kamu menemukan laporan kecelakaan: 'Ledakan terjadi pukul 15:45. 23 pekerja tewas. Penyebab: kelalaian pengawasan oleh E. Carter.'",
-                sanityChange: -15,
+                sanityChange: -10,
                 nextSceneId: "accident_report"
               }
             },
@@ -670,7 +670,7 @@ export const gameData = {
               consequence: {
                 type: "psychological",
                 description: "Kamu berbalik dan melihat bayangan ibumu berdiri di ambang pintu, wajahnya sedih dan mengecam.",
-                sanityChange: -20,
+                sanityChange: -15,
                 nextSceneId: "mother_confrontation"
               }
             },
@@ -680,7 +680,7 @@ export const gameData = {
               consequence: {
                 type: "escape",
                 description: "Kamu berlari keluar dari ruangan, menolak menghadapi bayangan itu.",
-                sanityChange: -10,
+                sanityChange: -5,
                 nextSceneId: "encounter_maw"
               }
             }
@@ -697,7 +697,7 @@ export const gameData = {
               consequence: {
                 type: "psychological",
                 description: "\"Aku tidak membunuh siapapun!\" teriakmu. Bayangan itu tertawa sedih sebelum lenyap.",
-                sanityChange: -15,
+                sanityChange: -10,
                 truthMeters: { denial: +20 },
                 nextSceneId: "after_mother_vision"
               }
@@ -839,7 +839,7 @@ export const gameData = {
             name: "The Maw",
             description: "Makhluk dengan tubuh penuh mulut yang menghisap suara dan mengubahnya menjadi jeritan.",
             health: 85,
-            attackPower: 25
+            attackPower: 20
           },
           choices: [
             {
@@ -852,14 +852,14 @@ export const gameData = {
                 battleOutcome: {
                   victory: {
                     description: "Kamu berhasil melukai The Maw cukup parah hingga makhluk itu mundur dengan mengeluarkan jeritan mengerikan.",
-                    healthChange: -20,
-                    sanityChange: -15,
+                    healthChange: -15,
+                    sanityChange: +5,
                     nextSceneId: "after_maw_battle"
                   },
                   defeat: {
                     description: "The Maw terlalu kuat. Jeritan-jeritan dari mulutnya membuatmu tak sadarkan diri...",
                     respawnSceneId: "factory_main_hall",
-                    sanityChange: -25
+                    sanityChange: -15
                   }
                 }
               }
@@ -935,7 +935,7 @@ export const gameData = {
               consequence: {
                 type: "discovery",
                 description: "Di panel kontrol Kamu menemukan buku log dengan catatan terakhir: 'Peringatan diabaikan. .06.C. menolak mengevakuasi demi mencapai target produksi.'",
-                sanityChange: -15,
+                sanityChange: -10,
                 nextSceneId: "control_panel_revelation"
               }
             },
@@ -962,7 +962,7 @@ export const gameData = {
               consequence: {
                 type: "psychological",
                 description: "Kamu mulai menerima kemungkinan bahwa Kamulah yang bertanggung jawab atas tragedi ini.",
-                sanityChange: -10,
+                sanityChange: +10,
                 truthMeters: { acceptance: +25 },
                 nextSceneId: "begin_to_remember"
               }
@@ -991,7 +991,7 @@ export const gameData = {
               consequence: {
                 type: "revelation",
                 description: "Kamu menyaksikan saat ledakan terjadi. Pria itu—dirimu—adalah satu-satunya yang berhasil keluar tepat waktu.",
-                sanityChange: -25,
+                sanityChange: -20,
                 truthMeters: { acceptance: +30 },
                 nextSceneId: "explosion_memory"
               }
@@ -1002,7 +1002,7 @@ export const gameData = {
               consequence: {
                 type: "escape",
                 description: "Kamu menutup jam saku, menolak melihat apa yang terjadi selanjutnya.",
-                sanityChange: -15,
+                sanityChange: -10,
                 truthMeters: { denial: +20 },
                 nextSceneId: "continue_denial"
               }
@@ -1247,7 +1247,7 @@ export const gameData = {
               consequence: {
                 type: "revelation",
                 description: "Kamu membuka diary dan membaca tulisan dengan nada marah dan paranoid. Tertulis nama: 'Diary Ethan Carter'.",
-                sanityChange: -15,
+                sanityChange: -10,
                 nextSceneId: "diary_revelation"
               }
             },
@@ -1257,7 +1257,7 @@ export const gameData = {
               consequence: {
                 type: "discovery",
                 description: "Surat-surat itu berasal dari rumah sakit jiwa Blackwood. Mereka membahas kondisi pasien yang bernama Ethan Carter.",
-                sanityChange: -10,
+                sanityChange: -5,
                 nextSceneId: "medical_letters"
               }
             }
@@ -1285,7 +1285,7 @@ export const gameData = {
               consequence: {
                 type: "psychological",
                 description: "Kamu menutup diary dengan tangan gemetar. Ingatan gelap mulai kembali.",
-                sanityChange: -20,
+                sanityChange: -10,
                 truthMeters: { acceptance: +30 },
                 nextSceneId: "upstairs_hallway"
               }
@@ -1344,7 +1344,7 @@ export const gameData = {
               consequence: {
                 type: "discovery",
                 description: "Di bawah tempat tidur, Kamu menemukan gambar crayon yang menunjukkan figur laki-laki dengan pisau dikelilingi tubuh-tubuh.",
-                sanityChange: -20,
+                sanityChange: -10,
                 nextSceneId: "child_drawing"
               }
             },
@@ -1370,7 +1370,7 @@ export const gameData = {
               consequence: {
                 type: "progression",
                 description: "Dengan rasa bersalah yang menghancurkan, Kamu melangkah menuju kamar utama.",
-                sanityChange: -10,
+                sanityChange: -5,
                 nextSceneId: "master_bedroom"
               }
             }
@@ -1396,7 +1396,7 @@ export const gameData = {
               consequence: {
                 type: "escape",
                 description: "Kamu menyadari bahwa itu adalah cermin besar di seberang ruangan. Dengan amarah dan ketakutan, Kamu memukulnya hingga hancur.",
-                sanityChange: -15,
+                sanityChange: -10,
                 nextSceneId: "broken_mirror",
               }
             }
@@ -1413,7 +1413,7 @@ export const gameData = {
               consequence: {
                 type: "discovery",
                 description: "Kamu memeriksa kamar dan menemukan buku harian ibumu di bawah bantal. Halaman terakhirnya berisi tulisan ketakutan tentang perilaku tidak stabil Ethan.",
-                sanityChange: -10,
+                sanityChange: -5,
                 nextSceneId: "mother_diary"
               }
             }
@@ -1430,7 +1430,7 @@ export const gameData = {
               consequence: {
                 type: "revelation",
                 description: "Doppelgänger tertawa dan berkata, 'Kamu membunuh mereka, Ethan. Setelah kecelakaan pabrik, Kamu kehilangan akal sehatmu. Kamu membunuh mereka semua di kamar ini.'",
-                sanityChange: -25,
+                sanityChange: -15,
                 truthMeters: { acceptance: +35 },
                 nextSceneId: "truth_revelation"
               }
@@ -1441,7 +1441,7 @@ export const gameData = {
               consequence: {
                 type: "battle",
                 description: "Kamu menyerang sosok itu, tapi tanganmu menembus seperti kabut. Sosok itu tertawa mengejek.",
-                sanityChange: -15,
+                sanityChange: -10,
                 nextSceneId: "doppelganger_laughs"
               }
             }
@@ -1475,7 +1475,7 @@ export const gameData = {
               consequence: {
                 type: "psychological",
                 description: "Kamu berteriak menolak tuduhan itu, tapi bayangan-bayangan masa lalu mulai menampakkan diri di sekitarmu.",
-                sanityChange: -20,
+                sanityChange: -15,
                 truthMeters: { denial: +35 },
                 nextSceneId: "denial_shadows"
               }
@@ -1486,7 +1486,7 @@ export const gameData = {
               consequence: {
                 type: "revelation",
                 description: "Dengan berat, Kamu mulai menerima kebenaran yang mengerikan tentang apa yang telah Kamu lakukan.",
-                sanityChange: -25,
+                sanityChange: +10,
                 truthMeters: { acceptance: +35 },
                 nextSceneId: "truth_revelation"
               }
@@ -1562,7 +1562,7 @@ export const gameData = {
               consequence: {
                 type: "discovery",
                 description: "Saat Kamu mendekati altar, Kamu melihat ukiran nama-nama: ayahmu, ibumu, adikmu... dan namamu sendiri, yang tercoret.",
-                sanityChange: -15,
+                sanityChange: -5,
                 nextSceneId: "altar_names"
               }
             },
@@ -1609,7 +1609,7 @@ export const gameData = {
               consequence: {
                 type: "puzzle_solved",
                 description: "Kamu berhasil menyusun semua potongan surat itu. Dokumen lengkapnya adalah surat dari Rumah Sakit Jiwa Blackwood yang membahas kondisimu yang tidak stabil setelah tragedi pabrik, dan perilaku kekerasanmu yang semakin parah.",
-                sanityChange: -20,
+                sanityChange: +5,
                 nextSceneId: "letter_revelation"
               }
             }
@@ -1636,7 +1636,7 @@ export const gameData = {
               consequence: {
                 type: "psychological",
                 description: "Kamu merobek surat itu dan menolak mempercayainya. Tiba-tiba, suara tawa gila menggema di seluruh gereja.",
-                sanityChange: -25,
+                sanityChange: -10,
                 truthMeters: { denial: +20 },
                 nextSceneId: "the_truth_angry"
               }
@@ -1651,7 +1651,7 @@ export const gameData = {
             id: "the_truth",
             name: "The Truth",
             description: "Manifestasi kebenaran dari diri Ethan yang sebenarnya, dengan luka di seluruh tubuh dan mata kosong.",
-            health: 100,
+            health: 125,
             attackPower: 30
           },
           choices: [
@@ -1693,7 +1693,7 @@ export const gameData = {
             id: "the_truth_enraged",
             name: "The Truth (Enraged)",
             description: "Versi marah dari The Truth, lebih kuat dan berbahaya.",
-            health: 120,
+            health: 150,
             attackPower: 35
           },
           choices: [
