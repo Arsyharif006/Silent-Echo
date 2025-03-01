@@ -233,7 +233,7 @@ export const gameData = {
               text: "Periksa Meja Resepsi",
               consequence: {
                 type: "discovery",
-                description: "Di meja resepsi Kamu menemukan buku register pasien. Buku itu terbuka pada halaman dengan nama 'E.C.'",
+                description: "Di meja resepsi Kamu menemukan buku register pasien. Buku itu terbuka pada halaman dengan nama '.06.C.'",
                 nextSceneId: "medical_records_puzzle"
               }
             },
@@ -254,7 +254,7 @@ export const gameData = {
           puzzleData: {
             id: "medical_records",
             description: "Susun kembali potongan-potongan rekaman medis untuk membaca informasi lengkapnya.",
-            solution: "E.C., 32, laki-laki. Pasien mengalami psikosis berat. Menunjukkan tanda-tanda disosiatif dan halusinasi. Berbahaya bagi diri sendiri dan orang lain."
+            solution: ".06.C., 32, laki-laki. Pasien mengalami psikosis berat. Menunjukkan tanda-tanda disosiatif dan halusinasi. Berbahaya bagi diri sendiri dan orang lain."
           },
           choices: [
             {
@@ -280,8 +280,8 @@ export const gameData = {
         },
         {
           id: "records_revelation",
-          narration: "Kamu membaca rekaman medis yang telah Kamu susun: \"E.C., 32, laki-laki. Pasien mengalami psikosis berat. Menunjukkan tanda-tanda disosiatif dan halusinasi. Berbahaya bagi diri sendiri dan orang lain.\"",
-          dialog: "Ethan: \"Siapa 'E.C.'? Apakah itu aku...?\"",
+          narration: "Kamu membaca rekaman medis yang telah Kamu susun: \".06.C., 32, laki-laki. Pasien mengalami psikosis berat. Menunjukkan tanda-tanda disosiatif dan halusinasi. Berbahaya bagi diri sendiri dan orang lain.\"",
+          dialog: "Ethan: \"Siapa '.06.C.'? Apakah itu aku...?\"",
           choices: [
             {
               id: "continue_exploration",
@@ -908,7 +908,7 @@ export const gameData = {
               text: "Periksa Panel Kontrol",
               consequence: {
                 type: "discovery",
-                description: "Di panel kontrol Kamu menemukan buku log dengan catatan terakhir: 'Peringatan diabaikan. E.C. menolak mengevakuasi demi mencapai target produksi.'",
+                description: "Di panel kontrol Kamu menemukan buku log dengan catatan terakhir: 'Peringatan diabaikan. .06.C. menolak mengevakuasi demi mencapai target produksi.'",
                 sanityChange: -15,
                 nextSceneId: "control_panel_revelation"
               }
