@@ -7,7 +7,7 @@ const Dialog = () => {
   const [isTyping, setIsTyping] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [textDistortion, setTextDistortion] = useState(false);
-  const typeSpeed = 20; // ms per character
+  const typeSpeed = 35; // ms per character
   
   const scene = getCurrentScene();
   const textToType = scene?.narration || '';

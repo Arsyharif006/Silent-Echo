@@ -18,7 +18,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     bgm.current = new Howl({
       src: ['/Silent-Echo/audio/silenthill.mp3'],
       loop: true,
-      volume: 0.8,
+      volume: 5,
     });
   
     return () => clearInterval(flickerInterval);
@@ -74,6 +74,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
         
         <div className="mt-10 text-gray-600 text-xs md:text-sm font-light">
           <p>By: Muhammad Arya Ramadhan</p>
+          <p>Gunakan headphone untuk pengalaman terbaik</p>
           <p className="mt-1">© 2025 Silent Echo</p>
         </div>
       </div>
