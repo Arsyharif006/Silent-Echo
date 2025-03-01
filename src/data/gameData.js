@@ -1678,7 +1678,7 @@ export const gameData = {
                   },
                   defeat: {
                     description: "The Truth terlalu kuat. Kamu jatuh ke tanah, tidak berdaya menghadapi kebenaran.",
-                    nextSceneId: "ending_redemption"
+                    nextSceneId: "ending_redemption_truth"
                   }
                 }
               }
@@ -1719,20 +1719,38 @@ export const gameData = {
             },
             {
               id: "fight_the_truth",
-              text: "Serang The Truth (Enraged)",
+              text: "Serang The Truth",
               consequence: {
                 type: "battle",
-                description: "Kamu menyerang The Truth (Enraged) dengan segala yang Kamu miliki, mencoba menghapus kebenaran itu.",
+                description: "Kamu menyerang The Truth dengan segala yang Kamu miliki, mencoba menghapus kebenaran itu.",
                 battleOutcome: {
                   victory: {
-                    description: "Kamu berhasil mengalahkan The Truth (Enraged), tapi saat sosok itu menghilang, Kamu merasa bagian dari dirimu sendiri ikut lenyap.",
-                    nextSceneId: "ending_insanity"
+                    description: "Kamu berhasil mengalahkan The Truth, tapi saat sosok itu menghilang, Kamu merasa bagian dari dirimu sendiri ikut lenyap.",
+                    nextSceneId: "ending_insanity",
+                    sanityChange: -15
                   },
                   defeat: {
-                    description: "The Truth (Enraged) terlalu kuat. Kamu jatuh ke tanah, tidak berdaya menghadapi kebenaran.",
-                    nextSceneId: "ending_redemption"
+                    description: "The Truth terlalu kuat. Kamu jatuh ke tanah, tidak berdaya menghadapi kebenaran.",
+                    nextSceneId: "ending_redemption_truth", // This will trigger our special cycle ending
+                    sanityChange: -20
                   }
                 }
+              }
+            }
+          ]
+        },
+        {
+          id: "ending_redemption_truth",
+          narration: "Saat tubuhmu melemah, kegelapan menyelimuti penglihatanmu. Namun, alih-alih akhir, sesuatu yang lain menunggumu di sana...",
+          dialog: "The Truth: \"Tidak semua orang cukup kuat untuk menerima kenyataan. Tidurlah... dan cobalah lagi.\"",
+          choices: [
+            {
+              id: "reborn_in_mist",
+              text: "Bangun Kembali di Kabut",
+              consequence: {
+                type: "game_end",
+                description: "Kamu membuka mata di tempat yang sama seperti awal, seolah semua yang terjadi hanyalah mimpi buruk. Namun, di dalam hatimu, sesuatu terasa berbeda. Apakah kali ini kamu bisa menemukan jalan keluar yang benar?",
+                ending: "truth"
               }
             }
           ]
@@ -1787,6 +1805,6 @@ export const gameData = {
         },
       ]
     }
-    
+
   ]
-  }
+}

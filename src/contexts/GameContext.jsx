@@ -146,70 +146,115 @@ export function GameProvider({ children }) {
     return 0; // Jika sanity < 10, tidak ada pengurangan
   };
   
-  const handleBattleAction = (action) => {
-    if (!battleState) return;
-    
-    let updatedBattle = { ...battleState };
-    const sanityDefense = calculateSanityDefense(protagonist.status.sanity);
+ // Modify the handleBattleAction function in GameContext.jsx
+// This updates the existing code to add special handling for Truth battles
+
+const handleBattleAction = (action) => {
+  if (!battleState) return;
   
-    if (action === 'attack') {
-      // Player menyerang monster
-      const playerDamage = Math.floor(Math.random() * 15) + 5;
-      updatedBattle.monsterHealth -= playerDamage;
-  
-      // Monster menyerang jika masih hidup
-      if (updatedBattle.monsterHealth > 0) {
-        let monsterDamage = Math.floor(Math.random() * battleState.monster.attackPower * 0.5) + 
-                            Math.floor(battleState.monster.attackPower * 0.5);
-        
-        // Kurangi damage berdasarkan sanity
-        monsterDamage = Math.max(0, monsterDamage - sanityDefense);
-  
-        updatedBattle.playerHealth -= monsterDamage;
-        updateProtagonistStatus({ health: updatedBattle.playerHealth });
-      }
-  
-    } else if (action === 'defend') {
-      // Player bertahan, damage lebih kecil
-      let monsterDamage = Math.floor(Math.random() * battleState.monster.attackPower * 0.3) + 
-                          Math.floor(battleState.monster.attackPower * 0.2);
+  let updatedBattle = { ...battleState };
+  const sanityDefense = calculateSanityDefense(protagonist.status.sanity);
+
+  if (action === 'attack') {
+    // Player attacks monster
+    const playerDamage = Math.floor(Math.random() * 15) + 5;
+    updatedBattle.monsterHealth -= playerDamage;
+
+    // Monster attacks back if still alive
+    if (updatedBattle.monsterHealth > 0) {
+      let monsterDamage = Math.floor(Math.random() * battleState.monster.attackPower * 0.5) + 
+                          Math.floor(battleState.monster.attackPower * 0.5);
       
-      // Kurangi damage berdasarkan sanity
+      // Reduce damage based on sanity
       monsterDamage = Math.max(0, monsterDamage - sanityDefense);
-  
+
       updatedBattle.playerHealth -= monsterDamage;
       updateProtagonistStatus({ health: updatedBattle.playerHealth });
-  
-      // Bonus: Tambahkan sanity saat defend (opsional)
-      updateProtagonistStatus({ sanity: Math.min(100, protagonist.status.sanity + 2) });
     }
-  
-    // Cek hasil pertarungan
-    if (updatedBattle.monsterHealth <= 0) {
-      // Player menang
-      setBattleState(null);
-      setCurrentSceneId(battleState.outcome.victory.nextSceneId);
-      if (battleState.outcome.victory.sanityChange) {
-        updateProtagonistStatus({ 
-          sanity: Math.max(0, protagonist.status.sanity + battleState.outcome.victory.sanityChange) 
-        });
+
+  } else if (action === 'defend') {
+    // Player defends, takes less damage
+    let monsterDamage = Math.floor(Math.random() * battleState.monster.attackPower * 0.3) + 
+                        Math.floor(battleState.monster.attackPower * 0.2);
+    
+    // Reduce damage based on sanity
+    monsterDamage = Math.max(0, monsterDamage - sanityDefense);
+
+    updatedBattle.playerHealth -= monsterDamage;
+    updateProtagonistStatus({ health: updatedBattle.playerHealth });
+
+    // Bonus: Add sanity when defending (optional)
+    updateProtagonistStatus({ sanity: Math.min(100, protagonist.status.sanity + 2) });
+  }
+
+  // Check battle results
+  if (updatedBattle.monsterHealth <= 0) {
+    // Player wins
+    const currentMonsterId = battleState.monster.id;
+    setBattleState(null);
+    
+    // Set previous battle info for ending screen to use
+    setCurrentSceneId(prev => {
+      // Store the battle info in the scene object for the ending screen to access
+      const nextSceneId = battleState.outcome.victory.nextSceneId;
+      const scene = gameData.chapters
+        .flatMap(chapter => [...chapter.scenes, chapter.initialScene])
+        .find(scene => scene.id === nextSceneId);
+        
+      if (scene) {
+        scene.previous_battle = currentMonsterId;
       }
-    } else if (updatedBattle.playerHealth <= 0) {
-      // Player kalah
-      setBattleState(null);
-      setCurrentSceneId(battleState.outcome.defeat.respawnSceneId || battleState.outcome.defeat.nextSceneId);
+      
+      return nextSceneId;
+    });
+    
+    if (battleState.outcome.victory.sanityChange) {
+      updateProtagonistStatus({ 
+        sanity: Math.max(0, protagonist.status.sanity + battleState.outcome.victory.sanityChange) 
+      });
+    }
+  } else if (updatedBattle.playerHealth <= 0) {
+    // Player loses
+    const currentMonsterId = battleState.monster.id;
+    setBattleState(null);
+    
+    // Special handling for Truth battles - if player loses to any version of The Truth
+    if (currentMonsterId === 'the_truth' || currentMonsterId === 'the_truth_enraged') {
+      // Direct to redemption ending when losing to The Truth
+      setCurrentSceneId('ending_redemption_truth');
+      
+      // Apply sanity penalty for fighting The Truth and losing
+      updateProtagonistStatus({ 
+        sanity: Math.max(0, protagonist.status.sanity - 20),
+        health: 50 // Restore some health for ending scene
+      });
+    } 
+    // Normal defeat handling for other monsters
+    else {
+      setCurrentSceneId(prev => {
+        const nextSceneId = battleState.outcome.defeat.respawnSceneId || battleState.outcome.defeat.nextSceneId;
+        const scene = gameData.chapters
+          .flatMap(chapter => [...chapter.scenes, chapter.initialScene])
+          .find(scene => scene.id === nextSceneId);
+          
+        if (scene) {
+          scene.previous_battle = currentMonsterId;
+        }
+        
+        return nextSceneId;
+      });
+      
       if (battleState.outcome.defeat.sanityChange) {
         updateProtagonistStatus({ 
           sanity: Math.max(0, protagonist.status.sanity + battleState.outcome.defeat.sanityChange) 
         });
       }
-    } else {
-      // Pertarungan berlanjut
-      setBattleState(updatedBattle);
     }
-  };
-  
-  
+  } else {
+    // Battle continues
+    setBattleState(updatedBattle);
+  }
+};
 
   const saveGame = () => {
     const gameState = {

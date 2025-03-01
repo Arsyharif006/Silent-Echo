@@ -28,35 +28,41 @@ const Game = ({ initialState, onGameOver, onReturnToMenu }) => {
   const staticSoundRef = useRef(null);
   const paperSoundRef = useRef(null);
   
-  useEffect(() => {
-    if (initialState) {
-      loadGame();
+
+useEffect(() => {
+  if (initialState) {
+    loadGame();
+  }
+  
+  // Fade in animation
+  setTimeout(() => setFadeIn(true), 100);
+  
+  // Random screen glitch effect
+  const glitchInterval = setInterval(() => {
+    if (Math.random() < 0.05) { // 5% chance
+      setScreenGlitch(true);
+      playStaticSound();
+      setTimeout(() => setScreenGlitch(false), 150);
     }
-    
-    // Fade in animation
-    setTimeout(() => setFadeIn(true), 100);
-    
-    // Random screen glitch effect
-    const glitchInterval = setInterval(() => {
-      if (Math.random() < 0.05) { // 5% chance
-        setScreenGlitch(true);
-        playStaticSound();
-        setTimeout(() => setScreenGlitch(false), 150);
-      }
-    }, 10000);
-    
-    // Check for game over
-    if (protagonist.status.health <= 0) {
-      onGameOver();
-    }
-    
-    // Initialize sound effects
-    confirmSoundRef.current = new Audio('/Silent-Echo/audio/confirm.mp3'); // Replace with actual path
-    staticSoundRef.current = new Audio('/Silent-Echo/audio/static.mp3'); // Replace with actual path
-    paperSoundRef.current = new Audio('/Silent-Echo/audio/paper.mp3'); // Replace with actual path
-    
-    return () => clearInterval(glitchInterval);
-  }, [initialState, protagonist.status.health]);
+  }, 10000);
+  
+  // Check for game over - with special exception for Truth battles
+  const currentScene = getCurrentScene();
+  const isBattlingTruth = battleState && 
+    (battleState.monster.id === 'the_truth' || battleState.monster.id === 'the_truth_enraged');
+  
+  // Only trigger game over if health <= 0 AND not in a Truth battle
+  if (protagonist.status.health <= 0 && !isBattlingTruth) {
+    onGameOver();
+  }
+  
+  // Initialize sound effects
+  confirmSoundRef.current = new Audio('/Silent-Echo/audio/confirm.mp3'); // Replace with actual path
+  staticSoundRef.current = new Audio('/Silent-Echo/audio/static.mp3'); // Replace with actual path
+  paperSoundRef.current = new Audio('/Silent-Echo/audio/paper.mp3'); // Replace with actual path
+  
+  return () => clearInterval(glitchInterval);
+}, [initialState, protagonist.status.health, battleState]);
   
   const currentScene = getCurrentScene();
   const currentChapter = getCurrentChapter();

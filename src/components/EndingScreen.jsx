@@ -57,6 +57,8 @@ const EndingScreen = ({ onReturnToMenu }) => {
         return 'Jatuh ke Dalam Kegilaan';
       case 'wakeup':
         return 'Pelarian dalam Penyangkalan';
+      case 'truth':
+        return 'Menghadapi Kebenaran';
       default:
         return 'Akhir Cerita';
     }
@@ -72,6 +74,8 @@ const EndingScreen = ({ onReturnToMenu }) => {
         return 'bg-red-900/40 border-red-700/50';
       case 'wakeup':
         return 'bg-blue-900/40 border-blue-700/50';
+      case 'truth':
+        return 'bg-purple-900/40 border-purple-700/50';
       default:
         return 'bg-gray-900/40 border-gray-700/50';
     }
