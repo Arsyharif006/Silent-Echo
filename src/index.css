@@ -69,3 +69,11 @@ body {
   box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-in forwards;
+}
