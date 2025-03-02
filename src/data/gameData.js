@@ -442,7 +442,7 @@ export const gameData = {
         },
         {
           id: "operating_room_safe",
-          narration: "Kamu berhasil mengunci pintu. Ruang operasi itu berisi berbagai peralatan medis usang dan sebuah foto lama di atas meja.",
+          narration: "Kamu berhasil mengunci pintu. Ruang operasi itu berisi berbagai peralatan medis usang dan sebuah foto lama di atas meja dan secarik catatan yang berisi \".04.C., 32, laki-laki. Pasien mengalami psikosis berat. Menunjukkan tanda-tanda disosiatif dan halusinasi. Berbahaya bagi diri sendiri dan orang lain.\"",
           dialog: "Ethan: \"Foto ini... tampaknya familiar.\"",
           choices: [
             {
