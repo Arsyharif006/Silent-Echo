@@ -46,7 +46,7 @@ const PuzzleScreen = () => {
     const glitchInterval = setInterval(() => {
       if (Math.random() < 0.1) {
         setTextGlitch(true);
-        playStaticSound(0.7);
+        playStaticSound(1);
         setTimeout(() => setTextGlitch(false), 150);
       }
     }, 4000);
@@ -95,14 +95,14 @@ const PuzzleScreen = () => {
     } else {
       // Add piece
       setSelectedPieces([...selectedPieces, index]);
-      playStaticSound(0.2);
+      playStaticSound(1);
     }
   };
   
   const handleButtonPress = (color) => {
     const newSequence = [...userSequence, color];
     setUserSequence(newSequence);
-    playStaticSound(0.2);
+    playStaticSound(1);
     
     // Automatically check if sequence is complete
     const buttons = puzzleData.solution.split('|').map(s => s.trim());
@@ -166,7 +166,7 @@ const PuzzleScreen = () => {
       }
       
       // Play error sound
-      playStaticSound(0.4);
+      playStaticSound(1);
     }
   };
   
