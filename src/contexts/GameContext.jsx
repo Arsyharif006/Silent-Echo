@@ -146,8 +146,56 @@ export function GameProvider({ children }) {
     return 0; // Jika sanity < 10, tidak ada pengurangan
   };
   
- // Modify the handleBattleAction function in GameContext.jsx
-// This updates the existing code to add special handling for Truth battles
+  const [puzzleState, setPuzzleState] = useState({
+    attempts: 0,
+    solved: false,
+    hintUsed: false
+  });
+  
+  // Add these new functions to handle puzzles
+  
+  const resetPuzzleState = () => {
+    setPuzzleState({
+      attempts: 0,
+      solved: false,
+      hintUsed: false
+    });
+  };
+  
+  const handlePuzzleAttempt = (isCorrect) => {
+    setPuzzleState(prev => ({
+      ...prev,
+      attempts: prev.attempts + 1,
+      solved: isCorrect
+    }));
+    
+    if (isCorrect) {
+      // Maybe add sanity based on how quickly they solved it
+      const sanityBonus = Math.max(5 - puzzleState.attempts, 0);
+      if (sanityBonus > 0) {
+        updateProtagonistStatus({ 
+          sanity: Math.min(100, protagonist.status.sanity + sanityBonus) 
+        });
+      }
+    } else if (puzzleState.attempts >= 3) {
+      // Penalty for multiple failed attempts
+      updateProtagonistStatus({ 
+        sanity: Math.max(0, protagonist.status.sanity - 3) 
+      });
+    }
+  };
+  
+  const useHint = () => {
+    setPuzzleState(prev => ({
+      ...prev,
+      hintUsed: true
+    }));
+    
+    // Small sanity cost for using hints
+    updateProtagonistStatus({ 
+      sanity: Math.max(0, protagonist.status.sanity - 1) 
+    });
+  };
 
 const handleBattleAction = (action) => {
   if (!battleState) return;
@@ -302,6 +350,10 @@ const handleBattleAction = (action) => {
     truthMeters,
     gameHistory,
     battleState,
+    puzzleState,
+    handlePuzzleAttempt,
+    useHint,
+    resetPuzzleState,
     getCurrentChapter,
     getCurrentScene,
     makeChoice,

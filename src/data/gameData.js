@@ -259,7 +259,7 @@ export const gameData = {
               text: "Periksa Meja Resepsi",
               consequence: {
                 type: "discovery",
-                description: "Di meja resepsi Kamu menemukan buku register pasien. Buku itu terbuka pada halaman dengan nama '.06.C.'",
+                description: "Di meja resepsi Kamu menemukan buku register pasien. Buku itu terbuka pada halaman dengan nama '.04.C.'",
                 nextSceneId: "medical_records_puzzle"
               }
             },
@@ -280,7 +280,8 @@ export const gameData = {
           puzzleData: {
             id: "medical_records",
             description: "Susun kembali potongan-potongan rekaman medis untuk membaca informasi lengkapnya.",
-            solution: ".06.C., 32, laki-laki. Pasien mengalami psikosis berat. Menunjukkan tanda-tanda disosiatif dan halusinasi. Berbahaya bagi diri sendiri dan orang lain."
+            solution: ".04.C., | 32, laki-laki.| Pasien mengalami psikosis berat.| Menunjukkan tanda-tanda | disosiatif dan halusinasi.| Berbahaya bagi diri sendiri dan orang lain.",
+            hint:"Susun kembali dengan urutan yang benar."
           },
           choices: [
             {
@@ -306,8 +307,8 @@ export const gameData = {
         },
         {
           id: "records_revelation",
-          narration: "Kamu membaca rekaman medis yang telah Kamu susun: \".06.C., 32, laki-laki. Pasien mengalami psikosis berat. Menunjukkan tanda-tanda disosiatif dan halusinasi. Berbahaya bagi diri sendiri dan orang lain.\"",
-          dialog: "Ethan: \"Siapa '.06.C.'? Apakah itu aku...?\"",
+          narration: "Kamu membaca rekaman medis yang telah Kamu susun: \".04.C., 32, laki-laki. Pasien mengalami psikosis berat. Menunjukkan tanda-tanda disosiatif dan halusinasi. Berbahaya bagi diri sendiri dan orang lain.\"",
+          dialog: "Ethan: \"Siapa '.04.C.'? Apakah itu aku...?\"",
           choices: [
             {
               id: "continue_exploration",
@@ -352,13 +353,6 @@ export const gameData = {
           id: "wraith_appears",
           narration: "Sosok wanita itu menghilang, digantikan oleh makhluk mengerikan yang melayang di udara dengan jubah compang-camping.",
           dialog: "Ethan: \"Apa itu?!\"",
-          monsterData: {
-            id: "the_wraith",
-            name: "The Wraith",
-            description: "Sosok melayang dengan jubah compang-camping dan wajah terdistorsi.",
-            health: 70,
-            attackPower: 25
-          },
           choices: [
             {
               id: "hide_in_closet",
@@ -386,7 +380,8 @@ export const gameData = {
           puzzleData: {
             id: "door_mechanism",
             description: "Aktifkan mekanisme penguncian dengan menekan tombol dalam urutan yang benar.",
-            solution: "Merah, Biru, Hijau, Kuning"
+            solution: "Merah | Biru | Hijau | Kuning",
+            hint: "._. -... --. -.--"
           },
           choices: [
             {
@@ -401,7 +396,6 @@ export const gameData = {
             {
               id: "fail_door_puzzle",
               text: "Gagal Memecahkan Teka-teki",
-              isDefault: true,
               consequence: {
                 type: "danger",
                 description: "Kamu tidak berhasil mengaktifkan mekanisme penguncian. Pintu hancur dan The Wraith menyerangmu!",
@@ -415,6 +409,13 @@ export const gameData = {
         {
           id: "wraith_attack",
           narration: "The Wraith melesat masuk dan menyerangmu dengan cakarnya yang tajam. Kamu tidak punya pilihan selain melawan.",
+          monsterData: {
+            id: "the_wraith",
+            name: "The Wraith",
+            description: "Sosok melayang dengan jubah compang-camping dan wajah terdistorsi.",
+            health: 75,
+            attackPower: 25
+          },
           choices: [
             {
               id: "fight_wraith",
@@ -642,7 +643,7 @@ export const gameData = {
               text: "Periksa Dokumen",
               consequence: {
                 type: "discovery",
-                description: "Kamu menemukan laporan kecelakaan: 'Ledakan terjadi pukul 15:45. 23 pekerja tewas. Penyebab: kelalaian pengawasan oleh E. Carter.'",
+                description: "Kamu menemukan laporan kecelakaan: 'Ledakan terjadi pukul (15:45). 23 pekerja tewas. Penyebab: kelalaian pengawasan oleh E. Carter.'",
                 sanityChange: -10,
                 nextSceneId: "accident_report"
               }
@@ -750,7 +751,7 @@ export const gameData = {
         },
         {
           id: "steel_door_puzzle",
-          narration: "Panel angka di pintu baja memerlukan kode 4 digit. Ada petunjuk samar di sampingnya: 'Tanggal kematian mereka'.",
+          narration: "Panel angka di pintu baja memerlukan kode 4 digit. Ada petunjuk samar di sampingnya: 'Waktu ledakan terjadi'.",
           puzzleData: {
             id: "door_code",
             description: "Masukkan kode 4 digit yang benar untuk membuka pintu baja.",
@@ -934,7 +935,7 @@ export const gameData = {
               text: "Periksa Panel Kontrol",
               consequence: {
                 type: "discovery",
-                description: "Di panel kontrol Kamu menemukan buku log dengan catatan terakhir: 'Peringatan diabaikan. .06.C. menolak mengevakuasi demi mencapai target produksi.'",
+                description: "Di panel kontrol Kamu menemukan buku log dengan catatan terakhir: 'Peringatan diabaikan. .04.C. menolak mengevakuasi demi mencapai target produksi.'",
                 sanityChange: -10,
                 nextSceneId: "control_panel_revelation"
               }
@@ -1110,7 +1111,7 @@ export const gameData = {
         },
         {
           id: "family_photos",
-          narration: "Kamu mengamati foto-foto itu. Salah satunya menunjukkan keluarga bahagia—tapi wajah semua orang kecuali dirimu telah dirusak. Di belakang salah satu foto, Kamu menemukan tulisan tangan: 'Selamat ulang tahun ke-10, Ethan sayang. -Ibu'",
+          narration: "Kamu mengamati foto-foto itu. Salah satunya menunjukkan keluarga bahagia—tapi wajah semua orang kecuali dirimu telah dirusak. Di belakang salah satu foto, Kamu menemukan tulisan tangan: 'Selamat ulang tahun ke-10, Ethan sayang. -Ibu_04_Okt'",
           dialog: "Ethan: \"Kenapa semua wajah dirusak...?\"",
           choices: [
             {
@@ -1139,7 +1140,7 @@ export const gameData = {
           puzzleData: {
             id: "photo_box",
             description: "Buka kotak foto yang terkunci.",
-            solution: "Tanggal ulang tahun Ethan",
+            solution: "0410",
             hint: "Lihat belakang foto"
           },
           choices: [
@@ -1595,12 +1596,12 @@ export const gameData = {
         },
         {
           id: "letter_puzzle",
-          narration: "Potongan-potongan surat itu tampaknya bisa disusun menjadi satu dokumen utuh. Beberapa bagian masih bisa terbaca: '...pasien Ethan Carter menunjukkan gejala paranoid schizophrenia parah...' dan '...menolak pengobatan setelah dilepaskan dari perawatan...'",
+          narration: "Potongan-potongan surat itu tampaknya bisa disusun menjadi satu dokumen utuh. Beberapa bagian masih bisa terbaca: ' Surat dari Rumah Sakit ... pasien ... ... menunjukkan gejala paranoid schizophrenia parah ' dan ' ... pengobatan setelah dilepaskan dari perawatan.'",
           puzzleData: {
             id: "reconstruct_letter",
             description: "Susun potongan-potongan surat menjadi dokumen utuh.",
-            solution: "Surat diagnosa dari Rumah Sakit Jiwa Blackwood",
-            hint: "Urutkan berdasarkan tanggal di tiap potongan"
+            solution: "Jiwa Blackwood | Ethan Carter | menolak",
+            hint: "Susun potongan-potongan surat dengan urutan yang benar"
           },
           choices: [
             {
@@ -1719,7 +1720,7 @@ export const gameData = {
             },
             {
               id: "fight_the_truth",
-              text: "Serang The Truth",
+              text: "Serang The Truth (Enraged)",
               consequence: {
                 type: "battle",
                 description: "Kamu menyerang The Truth dengan segala yang Kamu miliki, mencoba menghapus kebenaran itu.",
@@ -1741,7 +1742,7 @@ export const gameData = {
         },
         {
           id: "ending_redemption_truth",
-          narration: "Saat tubuhmu melemah, kegelapan menyelimuti penglihatanmu. Namun, alih-alih akhir, sesuatu yang lain menunggumu di sana...",
+          narration: "Saat tubuhmu melemah, kegelapan menyelimuti penglihatanmu. Namun, alih-alih berakhir, sesuatu yang lain menunggumu di sana...",
           dialog: "The Truth: \"Tidak semua orang cukup kuat untuk menerima kenyataan. Tidurlah... dan cobalah lagi.\"",
           choices: [
             {

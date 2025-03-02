@@ -4,6 +4,7 @@ import Dialog from './Dialog';
 import Choices from './Choices';
 import StatusBar from './StatusBar';
 import BattleScreen from './BattleScreen';
+import PuzzleScreen from './PuzzleScreen';
 import EndingScreen from './EndingScreen';
 
 const Game = ({ initialState, onGameOver, onReturnToMenu }) => {
@@ -112,21 +113,21 @@ useEffect(() => {
   const playStaticSound = () => {
     if (staticSoundRef.current) {
       staticSoundRef.current.volume = 0.3;
-      staticSoundRef.current.play();
+      staticSoundRef.current.play().catch(e => console.error("Audio play failed:", e));
     }
   };
   
   const playConfirmSound = () => {
     if (confirmSoundRef.current) {
       confirmSoundRef.current.volume = 1;
-      confirmSoundRef.current.play();
+      confirmSoundRef.current.play().catch(e => console.error("Audio play failed:", e));
     }
   };
   
   const playPaperSound = () => {
     if (paperSoundRef.current) {
       paperSoundRef.current.volume = 1;
-      paperSoundRef.current.play();
+      paperSoundRef.current.play().catch(e => console.error("Audio play failed:", e));
     }
   };
   
@@ -181,6 +182,9 @@ useEffect(() => {
     currentScene?.choices?.length === 1 && 
     currentScene.choices[0]?.consequence?.type === "game_end";
   
+  // Check if current scene has puzzle data
+  const hasPuzzleData = currentScene?.puzzleData !== undefined;
+  
   return (
     <div className={`game-container min-h-screen flex flex-col bg-black transition-all duration-1000
       ${fadeIn ? 'opacity-100' : 'opacity-0'}
@@ -220,6 +224,11 @@ useEffect(() => {
       <div className="flex-grow p-6 overflow-y-auto">
         {battleState ? (
           <BattleScreen />
+        ) : hasPuzzleData ? (
+          <>
+            <Dialog />
+            <PuzzleScreen />
+          </>
         ) : (
           <>
             <Dialog />

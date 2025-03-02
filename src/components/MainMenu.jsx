@@ -10,6 +10,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
   const [transitionStep, setTransitionStep] = useState(0);
   const [showCredits, setShowCredits] = useState(false);
   const bgm = useRef(null);
+  const buttonSfx = useRef(null);
   const creditsRef = useRef(null);
 
   useEffect(() => {
@@ -22,7 +23,13 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     bgm.current = new Howl({
       src: ['/Silent-Echo/audio/silenthill.mp3'],
       loop: true,
-      volume: 2,
+      volume: 1,
+    });
+
+    // Initialize button click sound effect
+    buttonSfx.current = new Howl({
+      src: ['/Silent-Echo/audio/break.mp3'], // Add your button click sound file here
+      volume: 3,
     });
 
     return () => clearInterval(flickerInterval);
@@ -56,21 +63,30 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     }
   };
 
+  // Function to play button click sound
+  const playButtonSound = () => {
+    if (buttonSfx.current) {
+      buttonSfx.current.play();
+    }
+  };
+
   const handleLoadGame = () => {
+    playButtonSound();
     startTransition();
     const savedState = loadGameState();
     setTimeout(() => {
       if (savedState) {
         onLoadGame(savedState);
       }
-    }, 10000); // Extended total time for the sequence
+    }, 12000); // Extended total time for the sequence
   };
 
   const handleNewGame = () => {
+    playButtonSound();
     startTransition();
     setTimeout(() => {
       onNewGame();
-    }, 10000); // Extended total time for the sequence
+    }, 12000); // Extended total time for the sequence
   };
 
   const startTransition = () => {
@@ -78,26 +94,35 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     setIsTransitioning(true);
     setTransitionStep(1); // Start with step 1 (warning message)
 
-    // Sequence of transition messages with extended first step
+    // Sequence of transition messages with extended timing
     setTimeout(() => {
-      setTransitionStep(2); // Show headphone message
-    }, 5000); // Extended from 2000ms to 4000ms
+      setTransitionStep(2); // Show path message
+    }, 4000);
 
     setTimeout(() => {
-      setTransitionStep(3); // Show creator name
-    }, 7000); // Adjusted timing
+      setTransitionStep(3); // Show headphone message
+    }, 7000);
 
     setTimeout(() => {
-      setTransitionStep(4); // Show "Enjoy"
-    }, 9000); // Adjusted timing
+      setTransitionStep(4); // Show creator name
+    }, 9500);
+
+    setTimeout(() => {
+      setTransitionStep(5); // Show "Enjoy"
+    }, 11000);
   };
+
 
   const handleShowCredits = () => {
     startMusic(); // Start music if not already playing
     setShowCredits(true);
   };
 
-  // Function to render the current transition message
+  const handleCloseCredits = () => {
+    playButtonSound();
+    setShowCredits(false);
+  };
+
   const renderTransitionMessage = () => {
     switch (transitionStep) {
       case 1:
@@ -116,21 +141,31 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
               Dengan melanjutkan, Anda memahami dan menerima risiko yang terkait dengan pengalaman bermain ini.
             </p>
           </div>
-
         );
       case 2:
+        return (
+          <div className="max-w-lg text-center tracking-wider animate-fadeIn">
+            <p className="text-gray-400 text-sm md:text-base mb-4 font-serif tracking-wider animate-fadeIn">
+              <span className="text-red-600">01001100</span><span className="text-gray-500">01001111</span><span className="text-red-600">01010011</span><span className="text-gray-500">01010100</span>
+            </p>
+            <p className="text-gray-500 text-xs md:text-sm mt-4 font-light tracking-wider animate-fadeIn">
+            Setiap langkah menggema, semakin samar jalan kembali.
+            </p>
+          </div>
+        );
+      case 3:
         return (
           <p className="text-gray-400 text-sm md:text-2xl font-serif tracking-wider animate-fadeIn">
             Gunakan headphone untuk pengalaman terbaik 🎧
           </p>
         );
-      case 3:
+      case 4:
         return (
           <p className="text-gray-400 text-sm md:text-2xl font-serif tracking-wider animate-fadeIn">
             By: Muhammad Arya Ramadhan
           </p>
         );
-      case 4:
+      case 5:
         return (
           <p className="text-gray-400 text-sm md:text-2xl font-serif tracking-wider animate-fadeIn">
             Enjoy.
@@ -140,6 +175,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
         return null;
     }
   };
+
 
   const renderCredits = () => {
     return (
@@ -217,7 +253,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
 
             {/* Button to close credits */}
             <button
-              onClick={() => setShowCredits(false)}
+              onClick={handleCloseCredits}
               className="text-gray-500 hover:text-gray-300 mb-32 mt-8 px-6 py-2 border border-gray-800 hover:border-gray-600 transition-colors duration-300"
             >
               Kembali
