@@ -10,6 +10,8 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
   const [transitionStep, setTransitionStep] = useState(0);
   const [showCredits, setShowCredits] = useState(false);
   const [playLightning, setPlayLightning] = useState(false);
+  const [disableBellSound, setDisableBellSound] = useState(false); // Track when to disable bell sound
+  const lightningTimeoutRef = useRef(null); // Ref to store and clear the lightning timeout
   const bgm = useRef(null);
   const buttonSfx = useRef(null);
   const creditsRef = useRef(null);
@@ -44,7 +46,13 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     // Set up random lightning flashes
     setupRandomLightning();
 
-    return () => clearInterval(flickerInterval);
+    return () => {
+      clearInterval(flickerInterval);
+      // Clear any pending lightning timeouts when component unmounts
+      if (lightningTimeoutRef.current) {
+        clearTimeout(lightningTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Effect to handle playing the lightning video when triggered
@@ -55,8 +63,8 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
       // Play the video
       lightningVideoRef.current.play();
       
-      // Play thunder sound with slight delay
-      if (thunderSfx.current) {
+      // Play thunder sound with slight delay ONLY if bell sound is not disabled
+      if (thunderSfx.current && !disableBellSound) {
         setTimeout(() => {
           thunderSfx.current.play();
         }, 100 + Math.random() * 300);
@@ -67,7 +75,23 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
         setPlayLightning(false);
       }, 3000); // Adjust based on your video length
     }
-  }, [playLightning]);
+  }, [playLightning, disableBellSound]);
+
+  // Effect to stop scheduling new lightning events when transitioning or in credits
+  useEffect(() => {
+    if (isTransitioning || showCredits) {
+      // Clear any pending lightning timeouts
+      if (lightningTimeoutRef.current) {
+        clearTimeout(lightningTimeoutRef.current);
+        lightningTimeoutRef.current = null;
+      }
+    } else {
+      // Restart lightning if coming back to main menu
+      if (!lightningTimeoutRef.current) {
+        setupRandomLightning();
+      }
+    }
+  }, [isTransitioning, showCredits]);
 
   const setupRandomLightning = () => {
     // Create random lightning at irregular intervals
@@ -79,12 +103,12 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
 
       // Schedule next lightning
       const nextLightningDelay = 5000 + Math.random() * 15000; // Between 5-20 seconds
-      setTimeout(triggerLightning, nextLightningDelay);
+      lightningTimeoutRef.current = setTimeout(triggerLightning, nextLightningDelay);
     };
 
     // Start the lightning effect
     const initialDelay = 3000 + Math.random() * 8000;
-    setTimeout(triggerLightning, initialDelay);
+    lightningTimeoutRef.current = setTimeout(triggerLightning, initialDelay);
   };
 
   // Add effect for credits scrolling
@@ -123,6 +147,8 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
   };
 
   const handleLoadGame = () => {
+    // Disable bell sound immediately when button is clicked
+    setDisableBellSound(true);
     playButtonSound();
     startTransition();
     const savedState = loadGameState();
@@ -134,6 +160,8 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
   };
 
   const handleNewGame = () => {
+    // Disable bell sound immediately when button is clicked
+    setDisableBellSound(true);
     playButtonSound();
     startTransition();
     setTimeout(() => {
@@ -165,6 +193,9 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
   };
 
   const handleShowCredits = () => {
+    // Disable bell sound immediately when credits button is clicked
+    setDisableBellSound(true);
+    playButtonSound(); // Add sound for credits button
     startMusic(); // Start music if not already playing
     setShowCredits(true);
   };
@@ -172,6 +203,10 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
   const handleCloseCredits = () => {
     playButtonSound();
     setShowCredits(false);
+    // Re-enable bell sound after a delay when returning to main menu
+    setTimeout(() => {
+      setDisableBellSound(false);
+    }, 1000);
   };
 
   const renderTransitionMessage = () => {
