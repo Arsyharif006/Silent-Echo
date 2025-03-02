@@ -9,9 +9,12 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionStep, setTransitionStep] = useState(0);
   const [showCredits, setShowCredits] = useState(false);
+  const [playLightning, setPlayLightning] = useState(false);
   const bgm = useRef(null);
   const buttonSfx = useRef(null);
   const creditsRef = useRef(null);
+  const thunderSfx = useRef(null);
+  const lightningVideoRef = useRef(null);
 
   useEffect(() => {
     setHasSave(hasSavedGame());
@@ -28,12 +31,61 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
 
     // Initialize button click sound effect
     buttonSfx.current = new Howl({
-      src: ['/Silent-Echo/audio/break.mp3'], // Add your button click sound file here
+      src: ['/Silent-Echo/audio/break.mp3'],
       volume: 0.4,
     });
 
+    // Initialize thunder sound effect
+    thunderSfx.current = new Howl({
+      src: ['/Silent-Echo/audio/bell.mp3'],
+      volume: 0.5,
+    });
+
+    // Set up random lightning flashes
+    setupRandomLightning();
+
     return () => clearInterval(flickerInterval);
   }, []);
+
+  // Effect to handle playing the lightning video when triggered
+  useEffect(() => {
+    if (playLightning && lightningVideoRef.current) {
+      // Reset video to beginning
+      lightningVideoRef.current.currentTime = 0;
+      // Play the video
+      lightningVideoRef.current.play();
+      
+      // Play thunder sound with slight delay
+      if (thunderSfx.current) {
+        setTimeout(() => {
+          thunderSfx.current.play();
+        }, 100 + Math.random() * 300);
+      }
+      
+      // Set back to false after video duration or a set time
+      setTimeout(() => {
+        setPlayLightning(false);
+      }, 3000); // Adjust based on your video length
+    }
+  }, [playLightning]);
+
+  const setupRandomLightning = () => {
+    // Create random lightning at irregular intervals
+    const triggerLightning = () => {
+      // Only trigger if not in transition or credits screen
+      if (!isTransitioning && !showCredits) {
+        setPlayLightning(true);
+      }
+
+      // Schedule next lightning
+      const nextLightningDelay = 5000 + Math.random() * 15000; // Between 5-20 seconds
+      setTimeout(triggerLightning, nextLightningDelay);
+    };
+
+    // Start the lightning effect
+    const initialDelay = 3000 + Math.random() * 8000;
+    setTimeout(triggerLightning, initialDelay);
+  };
 
   // Add effect for credits scrolling
   useEffect(() => {
@@ -112,7 +164,6 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     }, 11000);
   };
 
-
   const handleShowCredits = () => {
     startMusic(); // Start music if not already playing
     setShowCredits(true);
@@ -175,7 +226,6 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
         return null;
     }
   };
-
 
   const renderCredits = () => {
     return (
@@ -269,6 +319,17 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
       {/* Noise Overlay */}
       <div className="absolute inset-0 bg-noise opacity-10 pointer-events-none"></div>
 
+      {/* Lightning Video Overlay - Changed z-index to 1 */}
+      <div className="absolute inset-0 pointer-events-none z-1">
+        <video 
+          ref={lightningVideoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/Silent-Echo/video/lightning.mp4" 
+          muted 
+          playsInline
+        />
+      </div>
+
       {/* Fog Animation */}
       <div className="absolute inset-0 bg-fog animate-fog opacity-20 md:opacity-30 pointer-events-none"></div>
 
@@ -284,7 +345,8 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
       {/* Credits Screen */}
       {showCredits && renderCredits()}
 
-      <div className={`w-full max-w-md text-center p-6 md:p-8 relative ${isTransitioning || showCredits ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
+      {/* Menu content - Added z-index of 5 to ensure it's above the lightning */}
+      <div className={`w-full max-w-md text-center p-6 md:p-8 relative z-5 ${isTransitioning || showCredits ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
         <h1 className={`text-4xl md:text-5xl font-serif text-gray-400 mb-4 md:mb-6 tracking-wider ${titleFlicker ? 'blur-sm opacity-80' : ''} transition-all duration-300`}>
           Silent Echo
         </h1>
@@ -294,7 +356,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
 
         <div className="space-y-3 md:space-y-4">
           <button
-            className="w-full py-4 text-lg md:text-xl bg-black font-medium transition-all duration-300 md:rounded-md group relative"
+            className="w-full py-4 text-lg md:text-xl font-medium transition-all duration-300 md:rounded-md group relative"
             onClick={handleNewGame}
           >
             <div className="flex items-center justify-center">
@@ -306,7 +368,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
           {hasSave && (
             <button
               onClick={handleLoadGame}
-              className="w-full py-4 text-lg md:text-xl bg-black font-medium transition-all duration-300 md:rounded-md group relative"
+              className="w-full py-4 text-lg md:text-xl font-medium transition-all duration-300 md:rounded-md group relative"
             >
               <div className="flex items-center justify-center">
                 <span className="text-xl absolute left-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300">●</span>
