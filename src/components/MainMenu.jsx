@@ -29,7 +29,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     // Initialize button click sound effect
     buttonSfx.current = new Howl({
       src: ['/Silent-Echo/audio/break.mp3'], // Add your button click sound file here
-      volume: 3,
+      volume: 1,
     });
 
     return () => clearInterval(flickerInterval);
