@@ -28,7 +28,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
     bgm.current = new Howl({
       src: ['/Silent-Echo/audio/silenthill.mp3'],
       loop: true,
-      volume: 1,
+      volume: 0.8,
     });
 
     // Initialize button click sound effect
@@ -382,7 +382,7 @@ const MainMenu = ({ onNewGame, onLoadGame }) => {
 
       {/* Menu content - Added z-index of 5 to ensure it's above the lightning */}
       <div className={`w-full max-w-md text-center p-6 md:p-8 relative z-5 ${isTransitioning || showCredits ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
-        <h1 className={`text-4xl md:text-5xl font-serif text-gray-400 mb-4 md:mb-6 tracking-wider ${titleFlicker ? 'blur-sm opacity-80' : ''} transition-all duration-300`}>
+        <h1 className={`text-4xl md:text-5xl font-extrabold font-serif text-gray-400 mb-4 md:mb-6 tracking-wider ${titleFlicker ? 'blur-sm opacity-80' : ''} transition-all duration-300`}>
           Silent Echo
         </h1>
         <p className="text-gray-500 text-sm md:text-base mb-8 italic font-light">
