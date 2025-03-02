@@ -16,6 +16,7 @@ const PuzzleScreen = () => {
   const [buttonSequence, setButtonSequence] = useState([]);
   const [userSequence, setUserSequence] = useState([]);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [disabledColors, setDisabledColors] = useState([]);
   
   const staticSoundRef = useRef(null);
   
@@ -100,9 +101,18 @@ const PuzzleScreen = () => {
   };
   
   const handleButtonPress = (color) => {
+    // If the color is already disabled, do nothing
+    if (disabledColors.includes(color)) return;
+    
+    // Play static sound
+    playStaticSound(1);
+    
+    // Add the selected color to the sequence
     const newSequence = [...userSequence, color];
     setUserSequence(newSequence);
-    playStaticSound(1);
+    
+    // Add this color to disabled colors
+    setDisabledColors([...disabledColors, color]);
     
     // Automatically check if sequence is complete
     const buttons = puzzleData.solution.split('|').map(s => s.trim());
@@ -113,6 +123,11 @@ const PuzzleScreen = () => {
         makeChoice(success ? 'solve_door_puzzle' : 'fail_door_puzzle');
       }, 1500);
     }
+  };
+  
+  const resetButtonSequence = () => {
+    setUserSequence([]);
+    setDisabledColors([]);  // Clear all disabled colors
   };
   
   const handleInputChange = (e) => {
@@ -239,27 +254,47 @@ const PuzzleScreen = () => {
           </div>
           
           <div className="button-grid grid grid-cols-2 gap-4 mb-6">
-            <button
-              onClick={() => handleButtonPress('Merah')}
-              className="h-16 bg-red-900 hover:bg-red-800 rounded border border-red-800 transition-colors duration-300"
-            ></button>
+              <button
+                onClick={() => handleButtonPress('Hijau')}
+                disabled={disabledColors.includes('Hijau')}
+                className={`h-16 bg-green-900 rounded border border-green-800 transition-colors duration-300 ${
+                  disabledColors.includes('Hijau')
+                    ? 'opacity-50 cursor-not-allowed' 
+                    : 'hover:bg-green-800'
+                }`}
+              ></button>
             <button
               onClick={() => handleButtonPress('Biru')}
-              className="h-16 bg-blue-900 hover:bg-blue-800 rounded border border-blue-800 transition-colors duration-300"
-            ></button>
-            <button
-              onClick={() => handleButtonPress('Hijau')}
-              className="h-16 bg-green-900 hover:bg-green-800 rounded border border-green-800 transition-colors duration-300"
+              disabled={disabledColors.includes('Biru')}
+              className={`h-16 bg-blue-900 rounded border border-blue-800 transition-colors duration-300 ${
+                disabledColors.includes('Biru')
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : 'hover:bg-blue-800'
+              }`}
             ></button>
             <button
               onClick={() => handleButtonPress('Kuning')}
-              className="h-16 bg-yellow-800 hover:bg-yellow-700 rounded border border-yellow-700 transition-colors duration-300"
+              disabled={disabledColors.includes('Kuning')}
+              className={`h-16 bg-yellow-800 rounded border border-yellow-700 transition-colors duration-300 ${
+                disabledColors.includes('Kuning')
+                ? 'opacity-50 cursor-not-allowed' 
+                : 'hover:bg-yellow-700'
+            }`}
+            ></button>
+            <button
+              onClick={() => handleButtonPress('Merah')}
+              disabled={disabledColors.includes('Merah')}
+              className={`h-16 bg-red-900 rounded border border-red-800 transition-colors duration-300 ${
+                disabledColors.includes('Merah') 
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : 'hover:bg-red-800'
+              }`}
             ></button>
           </div>
           
           <div className="flex justify-center">
             <button
-              onClick={() => setUserSequence([])}
+              onClick={resetButtonSequence}
               className="px-4 py-2 bg-gray-900 text-gray-400 border border-gray-800 rounded hover:bg-gray-800"
             >
               Reset
@@ -277,7 +312,7 @@ const PuzzleScreen = () => {
               onChange={handleInputChange}
               maxLength={puzzleData.solution.length}
               placeholder={`Masukkan kode ${puzzleData.solution.length} digit`}
-              className="w-full bg-transparent text-center text-2xl tracking-widest font-mono text-gray-300 focus:outline-none"
+              className="w-full bg-transparent text-center text-md tracking-widest font-mono text-gray-300 focus:outline-none"
             />
           </div>
           

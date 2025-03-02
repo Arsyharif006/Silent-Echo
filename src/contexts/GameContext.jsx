@@ -62,11 +62,16 @@ export function GameProvider({ children }) {
   const makeChoice = (choiceId) => {
     const scene = getCurrentScene();
     if (!scene) return;
-
+  
     const choice = scene.choices.find(c => c.id === choiceId);
     if (!choice) return;
-
+  
     const consequence = choice.consequence;
+    
+    
+    if (consequence.itemsGained || consequence.itemsLost) {
+      updateInventory(consequence.itemsGained || [], consequence.itemsLost || []);
+    }
     
     // Handle sanity and health changes
     if (consequence.sanityChange) {
